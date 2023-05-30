@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Health Tracking App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="nav-item" onclick="changePage(this)">
+          <a href="index.html" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
+        </div>
+        <div class="nav-item" onclick="changePage(this)">
+          <a href="calendar.html" class="nav-link">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Calendar</span>
+          </a>
+        </div>
+        <div class="nav-item active" onclick="changePage(this)">
+          <a href="record.html" class="nav-link">
+            <i class="fas fa-chart-line"></i>
+            <span>Record</span>
+          </a>
+        </div>
+      </div>
+  
+
+  <script src="script.js"></script>
+</body>
+</html>

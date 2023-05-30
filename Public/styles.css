@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  #calendar {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #ccc;
+  }
+  
+  .record {
+    margin-bottom: 5px;
+  }
+  
+  .record-date {
+    font-weight: bold;
+  }
+  
+  .delete-button {
+    background-color: #ff0000;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f8f8;
+    width: 80px;
+    height: 100vh;
+  }
+  
+  .nav-item {
+    padding: 15px 10px;
+    text-align: center;
+  }
+  
+  .nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+  }
+  
+  .nav-link i {
+    margin-bottom: 5px;
+  }
+  
+  .nav-item.active {
+    background-color: #e9e9e9;
+  }
+  
