@@ -1,47 +1,97 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Health Tracking App</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-
-  <link rel="stylesheet" type="text/css" href="styles.css">
-</head>
-<body>
-
-    <div class="navbar">
-        <div class="nav-item" onclick="changePage(this)">
-          <a href="index.html" class="nav-link">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-          </a>
-        </div>
-        <div class="nav-item active" onclick="changePage(this)">
-          <a href="calendar.html" class="nav-link">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Calendar</span>
-          </a>
-        </div>
-        <div class="nav-item" onclick="changePage(this)">
-          <a href="record.html" class="nav-link">
-            <i class="fas fa-chart-line"></i>
-            <span>Record</span>
-          </a>
-        </div>
-      </div>
+  <head>
+    <title>Health Tracking App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   
+    <link rel="stylesheet" type="text/css" href="styles.css">
+  </head>
+<body>
+  <div class="navbar">
+    <div class="nav-item" onclick="changePage(this)">
+      <a href="index.html" class="nav-link">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+    </div>
+    <div class="nav-item active" onclick="changePage(this)">
+      <a href="calendar.html" class="nav-link">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Calendar</span>
+      </a>
+    </div>
+    <div class="nav-item" onclick="changePage(this)">
+      <a href="record.html" class="nav-link">
+        <i class="fas fa-chart-line"></i>
+        <span>Record</span>
+      </a>
+    </div>
+  </div>
+
   <div class="container">
     <h1>Health Tracking App</h1>
     <div id="calendar"></div>
-    <!-- <div id="moodRecords"></div> -->
   </div>
-  
 
-  
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
   <script src="script.js"></script>
+  <script>
+    // Function to load saved records from local storage
+    function loadRecords() {
+      var records = JSON.parse(localStorage.getItem("records")) || {};
+      var events = [];
+      for (var date in records) {
+        var eventObj = {
+          title: '<i class="' + records[date] + '"></i>',
+          start: date,
+          className: "record-event",
+        };
+        events.push(eventObj);
+      }
+      return events;
+    }
+  
+    // ...
+
+$(document).ready(function () {
+  // Initialize the calendar
+  var calendar = $("#calendar").fullCalendar({
+    // Set the calendar options
+    defaultView: "month",
+    selectable: true,
+    select: function (start, end) {
+      // Handle date selection event
+      var date = moment(start).format("YYYY-MM-DD");
+      location.href = "record.html?date=" + date;
+    },
+    events: loadRecords(),
+    eventRender: function (event, element) {
+      // Add delete button to each event in the calendar
+      var deleteButton = $('<span class="delete-button">x</span>');
+      deleteButton.click(function () {
+        deleteRecord(event.start.format("YYYY-MM-DD"));
+      });
+      element.append(deleteButton);
+    },
+  });
+
+  // Function to refresh the calendar events
+  function refreshCalendarEvents() {
+    calendar.fullCalendar("removeEvents");
+    calendar.fullCalendar("addEventSource", loadRecords());
+  }
+
+  // ...
+});
+
+  </script>
+  
+  
 </body>
 </html>

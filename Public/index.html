@@ -33,11 +33,61 @@
     </div>
   </div>
   
-  <div class="container">
-    <h1>Health Tracking App</h1>
-    <div id="calendar"></div>
-    <!-- <div id="moodRecords"></div> -->
+  <header>
+    <h1>Task Tracker</h1>
+</header>
+<form id="taskform">
+    <div class="form-row">
+        <label for="taskName">Name</label>
+        <input
+            type="text"
+            name="taskName"
+            id="taskName"
+            required="true"
+        >
+    </div>
+    <div class="form-row">
+        <label for="taskType">Type</label>
+        <select id="taskType" name="taskType" required="true">
+            <option value="">Select one</option>
+            <option value="Shoulder Training">Shoulder Training</option>
+            <option value="Leg Training">Leg Training</option>
+            <option value="Arm Training">Arm Training</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="taskRate">Rate</label>
+        <input
+            type="number"
+            name="taskRate"
+            id="taskRate"
+            required="true"
+        >
+    </div>
+    <div class="form-row">
+        <label for="taskTime">Time</label>
+        <input
+            type="number"
+            name="taskTime"
+            id="taskTime"
+            required="true"
+        >
+    </div>
+    <div class="form-row">
+      <label for="taskClient">Client</label>
+      <input
+          type="text"
+          name="taskClient"
+          id="taskClient"
+          required="true"
+      >
   </div>
+    <div class="form-row">
+        <input type="submit">
+    </div>
+</form>
+<h2>Tasks</h2>
+<ul id="tasklist"></ul>
   
 
   
