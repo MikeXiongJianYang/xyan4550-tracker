@@ -1,67 +1,186 @@
+/* Reset styles */
 body {
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  #calendar {
-    width: 100%;
-    height: 300px;
-    border: 1px solid #ccc;
-  }
-  
-  .record {
-    margin-bottom: 5px;
-  }
-  
-  .record-date {
-    font-weight: bold;
-  }
-  
-  .delete-button {
-    background-color: #ff0000;
-    color: #ffffff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .navbar {
-    display: flex;
-    flex-direction: column;
-    background-color: #f8f8f8;
-    width: 80px;
-    height: 100vh;
-  }
-  
-  .nav-item {
-    padding: 15px 10px;
-    text-align: center;
-  }
-  
-  .nav-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: #555;
-    font-size: 14px;
-  }
-  
-  .nav-link i {
-    margin-bottom: 5px;
-  }
-  
-  .nav-item.active {
-    background-color: #e9e9e9;
-  }
-  
+  margin: 0;
+  padding: 0;
+}
+
+/* Container styles */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Heading styles */
+h1 {
+  text-align: center;
+}
+
+/* Record styles */
+.record {
+  margin-bottom: 5px;
+}
+
+.record-date {
+  font-weight: bold;
+}
+
+/* Delete button styles */
+.delete-button {
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Navbar styles */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+  width: 80px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.nav-item {
+  padding: 15px 10px;
+  text-align: center;
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #555;
+  font-size: 14px;
+}
+
+.nav-link i {
+  margin-bottom: 5px;
+}
+
+.nav-item.active {
+  background-color: #e9e9e9;
+}
+
+/* Task Tracker styles */
+#tasktracker {
+  margin-left: 80px;
+  margin-right: 20px;
+}
+
+/* Card Container styles */
+#cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.card {
+  background-color: #ffffec;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: calc(50% - 10px); /* Adjusted width calculation to account for margin */
+  box-sizing: border-box;
+}
+
+#tasktracker,
+#tasklist-container {
+  background-color: #ffffec;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+#tasklist-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.card-text {
+  font-size: 16px;
+}
+
+/* Primary button styles */
+.btn-primary {
+  border-radius: 35px;
+  background-color: #fa9d68;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  margin-top: 10px; /* Add margin to create spacing */
+}
+
+.btn-primary:hover {
+  background-color: #e68044;
+  cursor: pointer;
+}
+
+/* Save button styles */
+#saveButton {
+  border-radius: 35px;
+  background-color: #fa9d68;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Delete button styles */
+.delete-button {
+  margin-left: auto;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}
+
+/* Emoji card container styles */
+.emoji-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emoji-card {
+  width: 200px;
+  height: 200px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emoji {
+  font-size: 80px;
+}

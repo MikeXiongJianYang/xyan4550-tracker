@@ -1,43 +1,143 @@
+// Homepage
+
+
+// Create an array called 'taskList'
+var taskList = [];
+
+// Create a function called 'addTask'
+// Give the function input parameters for: name, type, rate, time, set
+// Paste your object definition from above in the function
+// Replace the property values with the input parameters
+// Add the object to the taskList array
+function addTask(name, type, rate, time, set) {
+  // Creating the object with the usual property:value syntax
+  let task = {
+    name: name,
+    type: type,
+    id: Date.now(),
+    date: new Date().toISOString(),
+    rate: rate,
+    time: time,
+    set: set
+  };
+
+  taskList.push(task);
+  displayTask(task);
+}
+
+// Call the function with test values for the input parameters
+addTask("Initial Sketches", "Concept Ideation", 50, 5, "Google");
+
+// Log the array to the console.
+console.log(taskList);
+
 $(document).ready(function() {
-  // Initialize the calendar
-  var calendar = $('#calendar').fullCalendar({
-    // Set the calendar options
-    defaultView: 'month',
+  // Array to store the daily step counts
+var stepCounts = [];
+
+// Function to handle user input and update the chart
+function updateChart() {
+  var input = document.getElementById("stepInput");
+  var steps = parseInt(input.value);
+
+  if (isNaN(steps) || steps <= 0) {
+    alert("Please enter a valid number of steps.");
+    return;
+  }
+
+  stepCounts.push(steps);
+
+  // Clear the input field
+  input.value = "";
+
+  // Update the chart
+  var chartContainer = document.getElementById("chartContainer");
+  chartContainer.innerHTML = ""; // Clear previous bars
+
+  for (var i = 0; i < stepCounts.length; i++) {
+    var bar = document.createElement("div");
+    bar.classList.add("bar");
+    bar.style.height = stepCounts[i] + "px";
+    chartContainer.appendChild(bar);
+  }
+}
+
+// Event listener for form submission
+document.getElementById("stepForm").addEventListener("submit", function (event) {
+  event.preventDefault();
+  updateChart();
+});
+
+function displayTask(task) {
+  var taskListElement = document.getElementById("tasklist");
+  var listItem = document.createElement("li");
+  listItem.innerHTML = `<span>${task.name}</span> - ${task.type}, Rate: ${task.rate}, Time: ${task.time}, Client: ${task.set}`;
+  taskListElement.appendChild(listItem);
+}
+
+function addTask(name, type, rate, time, set) {
+  // Creating the object with the usual property:value syntax
+  let task = {
+    name: name,
+    type: type,
+    id: Date.now(),
+    date: new Date().toISOString(),
+    rate: rate,
+    time: time,
+    set: set
+  };
+
+  taskList.push(task);
+  displayTask(task);
+}
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+// Calendar page
+// Initialize the calendar
+$(document).ready(function () {
+  var calendar = $("#calendar").fullCalendar({
+    defaultView: "month",
     selectable: true,
-    select: function(start, end) {
-      // Handle date selection event
-      var date = moment(start).format('YYYY-MM-DD');
+    select: function (start, end) {
+      var date = moment(start).format("YYYY-MM-DD");
       var mood = prompt("How do you feel today?");
       if (mood) {
-        // Save the mood to local storage
         saveMood(date, mood);
-        // Refresh the calendar events
         refreshCalendarEvents();
       }
-      calendar.fullCalendar('unselect');
-      renderMoodRecords(); // Update mood records instantly
+      calendar.fullCalendar("unselect");
+      renderMoodRecords();
     },
-    events: loadMoods(), // Load saved moods on calendar initialization
-    eventRender: function(event, element) {
-      // Add delete button to each event in the calendar
+    events: loadMoods(),
+    eventRender: function (event, element) {
       var deleteButton = $('<span class="delete-button">x</span>');
-      deleteButton.click(function() {
-        deleteRecord(event.start.format('YYYY-MM-DD'));
+      deleteButton.click(function () {
+        deleteRecord(event.start.format("YYYY-MM-DD"));
       });
       element.append(deleteButton);
     }
   });
 
-  // Function to save the mood to local storage
   function saveMood(date, mood) {
-    var moods = JSON.parse(localStorage.getItem('moods')) || {};
+    var moods = JSON.parse(localStorage.getItem("moods")) || {};
     moods[date] = mood;
-    localStorage.setItem('moods', JSON.stringify(moods));
+    localStorage.setItem("moods", JSON.stringify(moods));
   }
 
-  // Function to load saved moods from local storage
   function loadMoods() {
-    var moods = JSON.parse(localStorage.getItem('moods')) || {};
+    var moods = JSON.parse(localStorage.getItem("moods")) || {};
     var events = [];
     for (var date in moods) {
       var eventObj = {
@@ -49,21 +149,57 @@ $(document).ready(function() {
     return events;
   }
 
-  // Function to refresh the calendar events
-  function refreshCalendarEvents() {
-    calendar.fullCalendar('removeEvents');
-    calendar.fullCalendar('addEventSource', loadMoods());
+// Function to refresh the calendar events
+function refreshCalendarEvents() {
+  calendar.fullCalendar('removeEvents');
+  calendar.fullCalendar('addEventSource', loadRecords());
+}
+
+
+// Function to delete a mood record
+function deleteRecord(date) {
+  var records = JSON.parse(localStorage.getItem('records')) || {};
+  delete records[date];
+  saveRecords(records);
+  refreshCalendarEvents(); // Refresh the calendar events
+}
+
+
+  // Function to render mood records
+  function renderMoodRecords() {
+    // Retrieve mood records from local storage
+    var moods = JSON.parse(localStorage.getItem("moods")) || {};
+    // Get the container element
+    var container = document.getElementById("mood-records");
+    // Clear existing records
+    container.innerHTML = "";
+    // Loop through each mood record and create a new paragraph element to display it
+    for (var date in moods) {
+      var moodRecord = document.createElement("p");
+      moodRecord.innerText = date + ": " + moods[date];
+      container.appendChild(moodRecord);
+    }
   }
 
-  // Function to delete a mood record
-  function deleteRecord(date) {
-    var moods = JSON.parse(localStorage.getItem('moods')) || {};
-    delete moods[date];
-    localStorage.setItem('moods', JSON.stringify(moods));
-    renderMoodRecords(); // Update mood records after deletion
-    refreshCalendarEvents(); // Refresh the calendar events
-  }
+  // Call the renderMoodRecords function initially to display existing records
+  renderMoodRecords();
+});
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Record page
   // Function to render mood records from local storage
   function renderMoodRecords() {
     var moods = JSON.parse(localStorage.getItem('moods')) || {};
@@ -107,23 +243,12 @@ function changePage(element) {
   element.classList.add('active');
 }
 
+
 // Add event listener to the save button
 document.getElementById("saveButton").addEventListener("click", saveRecord);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// Additional code for the task tracking functionality
+// Task Tracking functionality
 
 // Goal
 // Setting up variables for our HTML elements using DOM selection
@@ -177,32 +302,59 @@ function displayTask(task) {
   });
 }
 
-// Create an array called 'taskList'
-var taskList = [];
+// Get the emoji card elements
+const emojiCard1 = document.getElementById("emoji-card-1");
+const emojiCard2 = document.getElementById("emoji-card-2");
+const emojiCard3 = document.getElementById("emoji-card-3");
 
-// Create a function called 'addTask'
-// Give the function input parameters for: name, type, rate, time, client
-// Paste your object definition from above in the function
-// Replace the property values with the input parameters
-// Add the object to the taskList array
-function addTask(name, type, rate, time, client) {
-  // Creating the object with the usual property:value syntax
-  let task = {
-    name: name,
-    type: type,
-    id: Date.now(),
-    date: new Date().toISOString(),
-    rate: rate,
-    time: time,
-    client: client
-  };
+// Add click event listener to the emoji cards
+emojiCard1.addEventListener("click", function() {
+  handleEmojiClick("😃");
+});
 
-  taskList.push(task);
-  displayTask(task);
+emojiCard2.addEventListener("click", function() {
+  handleEmojiClick("😊");
+});
+
+emojiCard3.addEventListener("click", function() {
+  handleEmojiClick("🙂");
+});
+
+// Function to handle click events on emoji cards
+function selectEmoji(emojiId) {
+  // Remove the "selected" class from all emoji cards
+  $(".emoji-card").removeClass("selected");
+  
+  // Add the "selected" class to the clicked emoji card
+  $("#emoji-card-" + emojiId).addClass("selected");
 }
 
-// Call the function with test values for the input parameters
-addTask("Initial Sketches", "Concept Ideation", 50, 5, "Google");
+// Function to handle click event on save button
+function saveRecord() {
+  // Get the selected emoji
+  var selectedEmoji = $(".emoji-card.selected .emoji").text();
+  
+  // Get the date and note inputs
+  var dateInput = $("#dateInput").val();
+  var noteInput = $("#noteInput").val();
+  
+  // Do something with the selected emoji, date, and note (e.g., save to a database)
+  console.log("Selected Emoji: " + selectedEmoji);
+  console.log("Date: " + dateInput);
+  console.log("Note: " + noteInput);
+}
 
-// Log the array to the console.
-console.log(taskList);
+// Function to handle click events on navigation items
+function changePage(navItem) {
+  // Remove the "active" class from all navigation items
+  $(".nav-item").removeClass("active");
+  
+  // Add the "active" class to the clicked navigation item
+  $(navItem).addClass("active");
+}
+
+// Add onclick event to each emoji card
+$(".emoji-card").click(function() {
+  var emojiId = $(this).attr("id").split("-")[2];
+  selectEmoji(emojiId);
+});

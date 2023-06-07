@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Health Tracking App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+<head>
+  <title>How you feeling today?</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  
-    <link rel="stylesheet" type="text/css" href="styles.css">
-  </head>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
 <body>
   <div class="navbar">
     <div class="nav-item" onclick="changePage(this)">
@@ -31,36 +30,57 @@
       </a>
     </div>
   </div>
-
   <div class="container">
-    <h1>Health Tracking App</h1>
+    <h1>How you feeling today?</h1>
     <h2>Record</h2>
     <form id="recordForm">
       <div>
         <label for="dateInput">Date:</label>
         <input type="date" id="dateInput" required>
-
       </div>
       <div>
         <label for="noteInput">Note:</label>
         <input type="text" id="noteInput" placeholder="Enter a note">
       </div>
-      <div>
-        <label for="emojiInput">Emoji:</label>
-        <select id="emojiInput">
-          <option value="far fa-smile">😊</option>
-          <option value="far fa-frown">😞</option>
-          <option value="far fa-meh">😐</option>
-        </select>
+      <div class="emoji-card-container">
+        <div class="emoji-card" id="emoji-card-1">
+          <span class="emoji">😃</span>
+        </div>
+        <div class="emoji-card" id="emoji-card-2">
+          <span class="emoji">😊</span>
+        </div>
+        <div class="emoji-card" id="emoji-card-3">
+          <span class="emoji">🙂</span>
+        </div>
       </div>
       
-      <div>
-        <button type="button" id="saveButton">Save</button>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        // Add click event listener to the emoji cards using jQuery
+        $(document).ready(function() {
+          $(".emoji-card").click(function() {
+            var emojiId = $(this).attr("id").split("-")[2];
+            selectEmoji(emojiId);
+          });
+        });
+      
+        // Function to handle click events on emoji cards
+        function selectEmoji(emojiId) {
+          // Remove the "selected" class from all emoji cards
+          $(".emoji-card").removeClass("selected");
+      
+          // Add the "selected" class to the clicked emoji card
+          $("#emoji-card-" + emojiId).addClass("selected");
+        }
+      </script>
+      
 
+      <div>
+        <button type="button" id="saveButton" onclick="saveRecord()">Save</button>
       </div>
+      
     </form>
   </div>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="script.js"></script>
 </body>

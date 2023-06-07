@@ -31,12 +31,12 @@
       </a>
     </div>
   </div>
-
+  
   <div class="container">
-    <h1>Health Tracking App</h1>
+    <h1>Input your daily trainings!</h1>
     <div id="calendar"></div>
   </div>
-
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
@@ -48,7 +48,7 @@
       var events = [];
       for (var date in records) {
         var eventObj = {
-          title: '<i class="' + records[date] + '"></i>',
+          title: records[date],
           start: date,
           className: "record-event",
         };
@@ -57,40 +57,70 @@
       return events;
     }
   
-    // ...
-
-$(document).ready(function () {
-  // Initialize the calendar
-  var calendar = $("#calendar").fullCalendar({
-    // Set the calendar options
-    defaultView: "month",
-    selectable: true,
-    select: function (start, end) {
-      // Handle date selection event
-      var date = moment(start).format("YYYY-MM-DD");
-      location.href = "record.html?date=" + date;
-    },
-    events: loadRecords(),
-    eventRender: function (event, element) {
-      // Add delete button to each event in the calendar
-      var deleteButton = $('<span class="delete-button">x</span>');
-      deleteButton.click(function () {
-        deleteRecord(event.start.format("YYYY-MM-DD"));
+    // Function to save records to local storage
+    function saveRecords(records) {
+      localStorage.setItem("records", JSON.stringify(records));
+    }
+  
+    // Function to delete a record for a specific date
+    function deleteRecord(date) {
+      var records = JSON.parse(localStorage.getItem("records")) || {};
+      delete records[date];
+      saveRecords(records);
+      refreshCalendarEvents();
+    }
+  
+    $(document).ready(function () {
+      // Initialize the calendar
+      var calendar = $("#calendar").fullCalendar({
+        // Set the calendar options
+        header: {
+          left: "prev,next today",
+          center: "title",
+          right: "month,agendaWeek,agendaDay",
+        },
+        defaultView: "month",
+        selectable: true,
+        select: function (start, end) {
+          // Handle date selection event
+          var date = start.format("YYYY-MM-DD"); // Get the selected date
+          var input = prompt("Enter a record for " + date); // Prompt the user for a record
+          if (input) {
+            // If a record is entered
+            var records = JSON.parse(localStorage.getItem("records")) || {};
+            records[date] = input;
+            saveRecords(records);
+            refreshCalendarEvents();
+          }
+          calendar.unselect(); // Unselect the date range after handling
+        },
+        events: loadRecords(),
+        eventRender: function (event, element) {
+          // Add delete button to each event in the calendar
+          var deleteButton = $('<span class="delete-button">x</span>');
+          deleteButton.click(function () {
+            deleteRecord(event.start.format("YYYY-MM-DD"));
+          });
+          element.append(deleteButton);
+        },
+        editable: true,
+        eventDrop: function (event, delta, revertFunc) {
+          // Handle event drop (move)
+          var date = event.start.format("YYYY-MM-DD");
+          var records = JSON.parse(localStorage.getItem("records")) || {};
+          records[date] = event.title;
+          saveRecords(records);
+        },
       });
-      element.append(deleteButton);
-    },
-  });
-
-  // Function to refresh the calendar events
-  function refreshCalendarEvents() {
-    calendar.fullCalendar("removeEvents");
-    calendar.fullCalendar("addEventSource", loadRecords());
-  }
-
-  // ...
-});
-
+  
+      // Function to refresh the calendar events
+      function refreshCalendarEvents() {
+        calendar.fullCalendar("removeEvents");
+        calendar.fullCalendar("addEventSource", loadRecords());
+      }
+    });
   </script>
+  
   
   
 </body>

@@ -2,96 +2,216 @@
 <html>
 <head>
   <title>Health Tracking App</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
-
-  <div class="navbar">
-    <div class="nav-item active" onclick="changePage(this)">
-      <a href="index.html" class="nav-link">
-        <i class="fas fa-home"></i>
-        <span>Home</span>
-      </a>
+  <div class="container">
+    <!-- Navigation Bar -->
+    <div class="navbar">
+      <div class="nav-item active" onclick="changePage(this)">
+        <a href="index.html" class="nav-link">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+      </div>
+      <div class="nav-item" onclick="changePage(this)">
+        <a href="calendar.html" class="nav-link">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Calendar</span>
+        </a>
+      </div>
+      <div class="nav-item" onclick="changePage(this)">
+        <a href="record.html" class="nav-link">
+          <i class="fas fa-chart-line"></i>
+          <span>Record</span>
+        </a>
+      </div>
     </div>
-    <div class="nav-item" onclick="changePage(this)">
-      <a href="calendar.html" class="nav-link">
-        <i class="fas fa-calendar-alt"></i>
-        <span>Calendar</span>
-      </a>
-    </div>
-    <div class="nav-item" onclick="changePage(this)">
-      <a href="record.html" class="nav-link">
-        <i class="fas fa-chart-line"></i>
-        <span>Record</span>
-      </a>
-    </div>
-  </div>
-  
-  <header>
-    <h1>Task Tracker</h1>
-</header>
-<form id="taskform">
-    <div class="form-row">
-        <label for="taskName">Name</label>
-        <input
-            type="text"
-            name="taskName"
-            id="taskName"
-            required="true"
-        >
-    </div>
-    <div class="form-row">
-        <label for="taskType">Type</label>
-        <select id="taskType" name="taskType" required="true">
+    
+    <!-- Task Tracker Section -->
+    <div id="tasktracker" class="card">
+      <header>
+        <h1>Task Tracker</h1>
+      </header>
+      <form id="taskform">
+        <!-- Task Name -->
+        <div class="form-row">
+          <label for="taskName">Name</label>
+          <input type="text" name="taskName" id="taskName" required="true">
+        </div>
+        
+        <!-- Task Type -->
+        <div class="form-row">
+          <label for="taskType">Type</label>
+          <select id="taskType" name="taskType" required="true">
             <option value="">Select one</option>
             <option value="Shoulder Training">Shoulder Training</option>
             <option value="Leg Training">Leg Training</option>
             <option value="Arm Training">Arm Training</option>
-        </select>
+          </select>
+        </div>
+        
+        <!-- Task Rate -->
+        <div class="form-row">
+          <label for="taskRate">Rate</label>
+          <input type="number" name="taskRate" id="taskRate" required="true">
+        </div>
+        
+        <!-- Task Time -->
+        <div class="form-row">
+          <label for="taskTime">Time</label>
+          <input type="number" name="taskTime" id="taskTime" required="true">
+        </div>
+        
+        <!-- Task Set -->
+        <div class="form-row">
+          <label for="taskSet">Set</label>
+          <input type="text" name="taskSet" id="taskSet" required="true">
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="form-row">
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </div>
+      </form>
     </div>
-    <div class="form-row">
-        <label for="taskRate">Rate</label>
-        <input
-            type="number"
-            name="taskRate"
-            id="taskRate"
-            required="true"
-        >
+    
+    <!-- Task List -->
+    <div id="tasklist-container" class="card">
+      <h2>Tasks</h2>
+      <ul id="tasklist"></ul>
     </div>
-    <div class="form-row">
-        <label for="taskTime">Time</label>
-        <input
-            type="number"
-            name="taskTime"
-            id="taskTime"
-            required="true"
-        >
-    </div>
-    <div class="form-row">
-      <label for="taskClient">Client</label>
-      <input
-          type="text"
-          name="taskClient"
-          id="taskClient"
-          required="true"
-      >
   </div>
-    <div class="form-row">
-        <input type="submit">
-    </div>
-</form>
-<h2>Tasks</h2>
-<ul id="tasklist"></ul>
-  
 
-  
+  <script>
+    // Task Tracking functionality
 
-  <script src="script.js"></script>
+    // Create an array called 'taskList'
+    var taskList = [];
+
+    // Function to add a task to the taskList array
+    function addTask(name, type, rate, time, set) {
+      // Create a task object
+      var task = {
+        name: name,
+        type: type,
+        rate: rate,
+        time: time,
+        set: set
+      };
+
+      // Push the task object to the taskList array
+      taskList.push(task);
+
+      // Display the task on the page
+      displayTask(task);
+    }
+
+    // Function to display a task on the page
+    function displayTask(task) {
+      var taskListElement = document.getElementById("tasklist");
+      var listItem = document.createElement("li");
+      listItem.innerHTML = `<strong>${task.name}</strong> - ${task.type}, Rate: ${task.rate}, Time: ${task.time}, Set: ${task.set}`;
+      taskListElement.appendChild(listItem);
+    }
+
+    // Event listener for form submission
+    document.getElementById("taskform").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Get form input values
+      var name = document.getElementById("taskName").value;
+      var type = document.getElementById("taskType").value;
+      var rate = parseInt(document.getElementById("taskRate").value);
+      var time = parseInt(document.getElementById("taskTime").value);
+      var set = document.getElementById("taskSet").value;
+
+      // Call the addTask function with the input values
+      addTask(name, type, rate, time, set);
+
+      // Clear the form input fields
+      document.getElementById("taskName").value = "";
+      document.getElementById("taskType").value = "";
+      document.getElementById("taskRate").value = "";
+      document.getElementById("taskTime").value = "";
+      document.getElementById("taskSet").value = "";
+    });
+
+    // Function to delete a task from the taskList array
+    function deleteTask(taskId) {
+      // Find the task object with the matching id and remove it from the taskList array
+      taskList = taskList.filter(function(task) {
+        return task.id !== taskId;
+      });
+
+      // Remove the task from the page
+      var listItem = document.querySelector(`li[data-id="${taskId}"]`);
+      if (listItem) {
+        listItem.remove();
+      }
+    }
+
+    // Function to handle delete button click event
+    function handleDeleteButtonClick(event) {
+      // Get the task id from the data-id attribute of the parent li element
+      var taskId = event.target.parentNode.getAttribute("data-id");
+
+      // Call the deleteTask function with the task id
+      deleteTask(taskId);
+    }
+
+    // Function to initialize the taskList array from saved data (e.g., from local storage)
+    function initializeTaskList() {
+      // Retrieve saved task data from local storage
+      var savedTaskList = JSON.parse(localStorage.getItem("taskList"));
+
+      // Check if there is saved task data
+      if (savedTaskList && Array.isArray(savedTaskList)) {
+        // Iterate over the saved task data and add each task to the taskList array
+        savedTaskList.forEach(function(task) {
+          addTask(task.name, task.type, task.rate, task.time, task.set);
+        });
+      }
+    }
+
+    // Function to save the taskList array to local storage
+    function saveTaskList() {
+      // Save the taskList array to local storage
+      localStorage.setItem("taskList", JSON.stringify(taskList));
+    }
+
+    // Function to load the taskList array from local storage and display tasks on the page
+    function loadTaskList() {
+      // Retrieve task data from local storage
+      var savedTaskList = JSON.parse(localStorage.getItem("taskList"));
+
+      // Check if there is saved task data
+      if (savedTaskList && Array.isArray(savedTaskList)) {
+        // Assign the saved task data to the taskList array
+        taskList = savedTaskList;
+
+        // Display each task on the page
+        taskList.forEach(function(task) {
+          displayTask(task);
+        });
+      }
+    }
+
+    // Call the loadTaskList function to load and display tasks on the page
+    loadTaskList();
+
+    // Add event listener to the delete buttons
+    var deleteButtons = document.getElementsByClassName("delete-button");
+    for (var i = 0; i < deleteButtons.length; i++) {
+      deleteButtons[i].addEventListener("click", handleDeleteButtonClick);
+    }
+
+    // Add event listener to the window unload event to save the taskList array before leaving the page
+    window.addEventListener("unload", saveTaskList);
+  </script>
 </body>
 </html>
